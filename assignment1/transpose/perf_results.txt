@@ -1,0 +1,22 @@
+# started on Wed Apr  6 12:36:30 2022
+
+
+ Performance counter stats for './transpose2048':
+
+     3 163 676 452      instructions              #    0,32  insn per cycle           (62,21%)
+     9 899 468 091      cycles                                                        (62,41%)
+       491 926 015      L1-dcache-load-misses     #   47,50% of all L1-dcache accesses  (62,61%)
+     1 035 602 256      L1-dcache-loads                                               (62,78%)
+       422 016 044      dTLB-load-misses                                              (62,78%)
+     1 156 151 731      cache-references                                              (62,60%)
+           274 918      branch-misses             #    0,05% of all branches          (62,40%)
+       577 416 134      branch-instructions                                           (62,20%)
+   <not supported>      LLC-load-misses                                             
+   <not supported>      LLC-loads                                                   
+
+       1,999553160 seconds time elapsed
+
+       1,990199000 seconds user
+       0,008008000 seconds sys
+
+

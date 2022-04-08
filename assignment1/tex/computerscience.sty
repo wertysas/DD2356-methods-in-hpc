@@ -1,0 +1,40 @@
+%%
+%% Loads required packages for code listing and
+%% nice enumerations
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{computerscience}[2020/12/06 Computer Science Package]
+
+
+% Enumerations
+\RequirePackage{enumitem}
+\setlist[enumerate]{itemsep=3pt, topsep=3pt}
+
+
+% Code listings
+\RequirePackage{csquotes}
+\usepackage{xcolor}
+\usepackage{listings}
+\definecolor{light-gray}{gray}{0.95}
+\lstset{language=C++,
+	basicstyle=\ttfamily\scriptsize, %\small,
+	breaklines=true,
+	keepspaces=true,
+	%numbers=left,
+	%stepnumber=1,
+    %numbersep=10pt,
+	%numberstyle=\ttfamily,
+	frame=lines,
+	backgroundcolor=\color{light-gray},
+	keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{teal}\ttfamily,
+    commentstyle=\color{darkgray}\ttfamily,
+    morecomment=[l][\color{violet}]{\#},
+    emphstyle=\itshape,
+    showstringspaces=false
+}
+\lstdefinestyle{nocoloring}{
+    keywordstyle=\color{black},
+    commentstyle=\color{black},
+    stringstyle=\color{black}
+}

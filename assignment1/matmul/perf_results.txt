@@ -1,0 +1,26 @@
+# started on Wed Apr  6 12:01:47 2022
+
+
+ Performance counter stats for './small_naive':
+
+        22 182 717      instructions              #    3,26  insn per cycle         
+         6 797 269      cycles                                                      
+           748 728      L1-dcache-load-misses     #   11,67% of all L1-dcache accesses
+         6 416 938      L1-dcache-loads                                             
+               460      dTLB-load-misses                                            
+     <not counted>      cache-references                                              (0,00%)
+     <not counted>      branch-misses                                                 (0,00%)
+     <not counted>      branch-instructions                                           (0,00%)
+   <not supported>      LLC-load-misses                                             
+   <not supported>      LLC-loads                                                   
+
+       0,002645913 seconds time elapsed
+
+       0,002723000 seconds user
+       0,000000000 seconds sys
+
+
+Some events weren't counted. Try disabling the NMI watchdog:
+	echo 0 > /proc/sys/kernel/nmi_watchdog
+	perf stat ...
+	echo 1 > /proc/sys/kernel/nmi_watchdog
