@@ -5,7 +5,7 @@
 #include<stdio.h>
 #include <sys/time.h>
 #include <stdlib.h>
-
+#include "omp.h"
 
 #define ARRAY_SIZE 10000000
 #define ITERATIONS 1000
@@ -13,7 +13,7 @@
 
 
 void initialise_random(double *x, size_t size);
-double serial_sum(double *x, size_t size);
+double critical_sum(double *x, size_t size);
 double mysecond();
 double min(double* x, unsigned int n);
 double max(double* x, unsigned int n);
@@ -36,9 +36,9 @@ int main() {
     double tmp, res=0.0;
     
     for (int i=0; i<ITERATIONS+WARMUP_ITERATIONS; i++) {
-        t0 = mysecond();
-        tmp = serial_sum(x, ARRAY_SIZE);
-        t1 = mysecond();
+        t0 = omp_get_wtime();
+        tmp = critical_sum(x, ARRAY_SIZE);
+        t1 = omp_get_wtime();
         tdiffs[i] = (t1-t0)*1e6;
 
         // computation to make sure tmp is calculated
@@ -63,9 +63,11 @@ void initialise_random(double *x, size_t size) {
     }
 }
 
-double serial_sum(double *x, size_t size) {
+double critical_sum(double *x, size_t size) {
     double sum = 0.0;
+    #pragma omp parallel for
     for (size_t i=0; i<size; i++) {
+        #pragma omp critical
         sum += x[i];
     }
     return sum;
