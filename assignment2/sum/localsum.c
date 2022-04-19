@@ -9,12 +9,12 @@
 #include <math.h>
 
 #define ARRAY_SIZE 100000000
-#define ITERATIONS 10
+#define ITERATIONS 100
 #define WARMUP_ITERATIONS 2
-
+#define NTHREADS 32
 
 void initialise_random(double *x, size_t size);
-double omp_critical_sum(double *x, size_t size);
+double omp_local_sum(double *x, size_t size);
 double min(double* x, unsigned int n);
 double max(double* x, unsigned int n);
 double mean(double* x, unsigned int n);
@@ -33,23 +33,14 @@ int main() {
     
     double mint, maxt, meant, vart;
     double t0, t1;
-    double tmp, res;
-   
-    int sizes[10] ={1, 2, 4, 8, 12, 16, 20, 24, 28, 32};
+    double tmp, res=0.0;
     
-    for (int k = 0; k<10; k++)
-    {
-    printf("================================================================================\n");
-    int num_threads = sizes[k];
-    omp_set_num_threads(num_threads);
-    printf("THREADS:\t %d \n", num_threads);
-    res =0.0;
-
     for (int i=0; i<ITERATIONS+WARMUP_ITERATIONS; i++) {
         t0 = omp_get_wtime();
-        tmp = omp_critical_sum(x, ARRAY_SIZE);
+        tmp = omp_local_sum(x, ARRAY_SIZE);
         t1 = omp_get_wtime();
         tdiffs[i] = (t1-t0)*1e3;
+
         // computation to make sure tmp is calculated
         res += tmp;
     }
@@ -60,8 +51,8 @@ int main() {
     
     printf("result: %f\n", res/(double)ARRAY_SIZE);
     printf("min: %f \nmax: %f \nmean: %f \nstd deviation:%f \n", mint, maxt, meant, sqrt(vart));
-    printf("================================================================================\n");
-    }
+    printf("--------------------------------------------------------------------------------\n");
+
 }
 
 
@@ -71,17 +62,15 @@ void initialise_random(double *x, size_t size) {
     }
 }
 
-double omp_critical_sum(double *x, size_t size) {
+double omp_local_sum(double *x, size_t size) {
     double sum = 0.0;
-    #pragma omp parallel for
+    #pragma omp parallel for reduction(+:sum)
     for (size_t i=0; i<size; i++) {
-        #pragma omp critical
-        { 
-        sum += x[i];
-        }
-    }
+        sum +=x[i];
+    } // end of parallel region
     return sum;
-}
+} 
+    
 
 double min(double* x, unsigned int n) {
     double min = x[0];
