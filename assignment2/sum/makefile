@@ -1,5 +1,5 @@
 
-all: serialsum ompsum criticalsum localsum
+all: serialsum ompsum criticalsum localsum localsumpadded
 
 serialsum: serialsum.c
 	cc -O2 -fopenmp -o serialsum serialsum.c -lm
@@ -12,4 +12,7 @@ criticalsum: criticalsum.c
 
 localsum: localsum.c
 	cc -O2 -fopenmp -o localsum localsum.c -lm
+
+localsumpadded: localsumpadded.c
+	cc -O2 -fopenmp -o localsumpadded localsumpadded.c -lm
 

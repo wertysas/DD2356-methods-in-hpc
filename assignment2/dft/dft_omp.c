@@ -32,7 +32,7 @@ int printResults(double *xr, double *xi, int N);
 
 int main(int argc, char *argv[]) {
   // size of input array
-  int N = 8000; // 8,000 is a good number for testing
+  int N = 10000; // 8,000 is a good number for testing
   printf("DFTW calculation with N = %d \n", N);
 
   // Allocate array for input vector
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
 // DFT/IDFT routine
 // idft: 1 direct DFT, -1 inverse IDFT (Inverse DFT)
 int DFT(int idft, double *xr, double *xi, double *Xr_o, double *Xi_o, int N) {
+  #pragma omp parallel for
   for (int k = 0; k < N; k++) {
-    #pragma omp parallel for
     for (int n = 0; n < N; n++) {
       // Real part of X[k]
       Xr_o[k] +=
@@ -99,6 +99,7 @@ int DFT(int idft, double *xr, double *xi, double *Xr_o, double *Xi_o, int N) {
 
   // normalize if you are doing IDFT
   if (idft == -1) {
+    #pragma omp parallel for
     for (int n = 0; n < N; n++) {
       Xr_o[n] /= N;
       Xi_o[n] /= N;

@@ -9,7 +9,7 @@
 #include <math.h>
 
 #define ARRAY_SIZE 100000000
-#define ITERATIONS 100
+#define ITERATIONS 10
 #define WARMUP_ITERATIONS 2
 #define NTHREADS 32
 
@@ -35,12 +35,21 @@ int main() {
     double t0, t1;
     double tmp, res=0.0;
     
+    int sizes[10] ={1, 2, 4, 8, 12, 16, 20, 24, 28, 32};
+    
+    for (int k = 0; k<10; k++)
+    {
+    printf("================================================================================\n");
+    int num_threads = sizes[k];
+    omp_set_num_threads(num_threads);
+    printf("THREADS:\t %d \n", num_threads);
+    res =0.0;
+
     for (int i=0; i<ITERATIONS+WARMUP_ITERATIONS; i++) {
         t0 = omp_get_wtime();
         tmp = omp_local_sum(x, ARRAY_SIZE);
         t1 = omp_get_wtime();
         tdiffs[i] = (t1-t0)*1e3;
-
         // computation to make sure tmp is calculated
         res += tmp;
     }
@@ -50,9 +59,9 @@ int main() {
     vart = sample_var(tdiffs+WARMUP_ITERATIONS, ITERATIONS);
     
     printf("result: %f\n", res/(double)ARRAY_SIZE);
-    printf("min: %f \nmax: %f \nmean: %f \nstd deviation:%f \n", mint, maxt, meant, sqrt(vart));
-    printf("--------------------------------------------------------------------------------\n");
-
+    printf("min: %f \nmax: %f \nmean: %f \nstd deviation: %f \n", mint, maxt, meant, sqrt(vart));
+    printf("================================================================================\n");
+    }
 }
 
 

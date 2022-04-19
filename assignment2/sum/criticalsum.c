@@ -59,7 +59,7 @@ int main() {
     vart = sample_var(tdiffs+WARMUP_ITERATIONS, ITERATIONS);
     
     printf("result: %f\n", res/(double)ARRAY_SIZE);
-    printf("min: %f \nmax: %f \nmean: %f \nstd deviation:%f \n", mint, maxt, meant, sqrt(vart));
+    printf("min: %f \nmax: %f \nmean: %f \nstd deviation: %f \n", mint, maxt, meant, sqrt(vart));
     printf("================================================================================\n");
     }
 }

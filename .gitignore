@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+
+# jetbrains related
+.idea
+
